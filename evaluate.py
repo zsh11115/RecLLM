@@ -2,7 +2,7 @@ import numpy as np
 import ast
 
 
-# TODO: 统计所有用户的评估参数，进行均值计算
+#  统计所有用户的评估参数，进行均值计算
 def evaluate(raw_data):
     recommendations = [ast.literal_eval(item) for item in raw_data]
     topk = [1, 5, 10]
