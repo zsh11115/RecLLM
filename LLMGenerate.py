@@ -10,6 +10,14 @@ client = OpenAI()
 
 
 def LLMGenerate(df, user_id, mode, user_profile=""):
+    """
+    使用LLM生成目标
+    :param df:
+    :param user_id:
+    :param mode:
+    :param user_profile:
+    :return: {"user_id": user_id, "output": profileInfo}
+    """
     if mode == Constant.POS_MODE:
         sequence = positive_sequence_data(df, user_id)
         prompt = Positive_Prompt_GPT41.format(profile=user_profile, sequence_item_profile=sequence)

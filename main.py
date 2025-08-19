@@ -11,15 +11,15 @@ subsets = 480
 if __name__ == '__main__':
     # 读取用户数据
     print("读取用户数据")
-    df = readDataset(dataset, subsets);
+    df = readDataset(dataset, subsets)  # 读取数据
     ids = getUID(df)
-    mode = Constant.DOUL_MODE
+    mode = Constant.DOUL_MODE  # 模式
     print("对每个用户生成profile")
     # 对每个用户生成profile
     for id in ids:
-        candidate_list_test=test_data_item(df, id)
-        #time.sleep(30)
-        userProfileInfo=LLMGenerate(df,id,mode)
-        print("userProfileInfo:",userProfileInfo)
-        profilePath=Constant.ProfilePath.format(dataset=dataset,subsets=subsets,mode=mode)
-        saveProfile(userProfileInfo,profilePath)
+        candidate_list_test = test_data_item(df, id)  # 测试数据列表
+        # time.sleep(30)
+        userProfileInfo = LLMGenerate(df, id, mode)  # 生成用户画像
+        print("userProfileInfo:", userProfileInfo)
+        profilePath = Constant.ProfilePath.format(dataset=dataset, subsets=subsets, mode=mode)
+        saveProfile(userProfileInfo, profilePath)  # 保存用户画像信息

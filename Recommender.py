@@ -11,6 +11,10 @@ subsets = 480
 
 
 def recommender():
+    """
+    推荐器
+    :return: score_lists
+    """
     df = readDataset(dataset, subsets);
     ids = getUID(df)
     GeMode = Constant.REC_MODE
