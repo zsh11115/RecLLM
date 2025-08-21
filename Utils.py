@@ -51,3 +51,17 @@ def get_user_profile_by_id(user_id,filePath):
     profile=existed_user_personas_dict[user_id]['profile']
     # print(profile)
     return profile
+
+def item_feature_to_str(item_feature):
+    """
+    Convert item feature to string.
+    :param item_feature: The feature of an item, which is a dictionary.
+    """
+    assert isinstance(item_feature, dict), f"item_feature should be a dictionary, but got {type(item_feature)}"
+    feature_str = ""
+    for key,value in item_feature.items():
+        if 'id' in key:
+            continue
+        else:
+            feature_str += f"{key}:{value}\n"
+    return feature_str
