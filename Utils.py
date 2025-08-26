@@ -1,7 +1,10 @@
-
 import os
 import json
-import random
+
+import numpy as np
+import requests
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+from collections import defaultdict
 
 def saveProfile(content, filePath):
     # 获取 user_id 和 profile
@@ -38,7 +41,7 @@ def saveProfile(content, filePath):
         json.dump(existed_user_personas_dict, f, indent=4, ensure_ascii=False)
 
 
-def get_user_profile_by_id(user_id,filePath):
+def get_user_profile_by_id(user_id, filePath):
     # 如果文件存在就读取
     if os.path.exists(filePath):
         with open(filePath, 'r') as f:
@@ -48,9 +51,10 @@ def get_user_profile_by_id(user_id,filePath):
                 existed_user_personas_dict = {}
     else:
         existed_user_personas_dict = {}
-    profile=existed_user_personas_dict[user_id]['profile']
+    profile = existed_user_personas_dict[user_id]['profile']
     # print(profile)
     return profile
+
 
 def item_feature_to_str(item_feature):
     """
@@ -59,9 +63,43 @@ def item_feature_to_str(item_feature):
     """
     assert isinstance(item_feature, dict), f"item_feature should be a dictionary, but got {type(item_feature)}"
     feature_str = ""
-    for key,value in item_feature.items():
+    for key, value in item_feature.items():
         if 'id' in key:
             continue
         else:
             feature_str += f"{key}:{value}\n"
     return feature_str
+
+
+class EasyRec:
+    def __init__(self, url='http://localhost:8500'):
+        self.url = url
+
+    def get_embedding(self, documents):
+        response = requests.post(f"{self.url}/get_embedding", json={"documents": documents})
+        print("Status:", response.status_code)
+        print("Response:", response.text)
+        embeddings = response.json()['embeddings']
+        return embeddings
+
+    def predict(self, query, documents):
+        response = requests.post(f"{self.url}/compute_scores", json={"query": query, "documents": documents})
+        scores = response.json()['scores']
+        return scores
+
+
+def hierarchical_clustering(embeddings, distance_threshold=0.3):
+    Z = linkage(embeddings, method='ward', metric='euclidean')
+
+    labels = fcluster(Z, t=distance_threshold, criterion='distance')
+
+    original_indices = np.arange(len(embeddings))
+
+    class2index_list = defaultdict(list)
+    index2class = {}
+
+    for original_idx, label in zip(original_indices, labels):
+        class2index_list[label].append(original_idx)
+        index2class[original_idx] = label
+
+    return dict(class2index_list), index2class

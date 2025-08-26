@@ -1,6 +1,9 @@
 from Constant import DataSetsFile
 import pandas as pd
 
+from data_sampling import sampling_choice
+
+
 def readDataset(dataset, subsets):
     """
     读取数据集数据
@@ -42,10 +45,14 @@ def positive_sequence_data(df, user_id):
     :return: {"pos": positive_data}
     """
     sequence = []
+    # print("df['user_id'] == user_id",df['user_id'] == user_id)
     user_data = df[df['user_id'] == user_id].sort_values(by='timestamp')
     positive_data = user_data[user_data['rating'] >= 1]
-    negitive_data = user_data[user_data['rating'] < 1]
-    lenOfData = len(positive_data)
+    positive_data = positive_data.drop(['rating', 'timestamp'],axis=1)
+    # print("positive_data:\n",positive_data)
+    # 对序列进行采样
+    sample_method = "SBS"
+    sampling_choice(positive_data, sample_method)
     # print("user_id:", user_id, "length of data:", lenOfData)
     # print("positive data:",positive_data)
     return {"pos": positive_data}
@@ -58,11 +65,11 @@ def doul_sequence_data(df, user_id):
     :param user_id:
     :return: {"pos": positive_data, "neg": negative_data}
     """
-    sequence = []
+    # sequence = []
     user_data = df[df['user_id'] == user_id].sort_values(by='timestamp')
     positive_data = user_data[user_data['rating'] >= 1]
     negative_data = user_data[user_data['rating'] < 1]
-    lenOfData = len(positive_data)
+    # lenOfData = len(positive_data)
     # print("user_id:", user_id, "length of data:", lenOfData)
     # print("positive data:",positive_data)
     return {"pos": positive_data, "neg": negative_data}
@@ -75,13 +82,6 @@ def test_data_item(df, user_id):
     :param user_id:
     :return:[{},{},{},...,{}]
     """
-    """unique_items=getItemId(df)
-    user_data = df[df['user_id'] == user_id].sort_values(by='timestamp')
-    positive_data = user_data[user_data['rating'] >= 1]
-    negative_data = user_data[user_data['rating'] < 1]
-    print("negative_data:", user_data)
-    negative_samples = negative_data.sample(9, random_state=42)
-    print("negative_samples:",negative_samples)"""
 
     all_data = df.sort_values(by='timestamp')
     user_data = df[df['user_id'] == user_id].sort_values(by='timestamp')
@@ -99,6 +99,6 @@ def test_data_item(df, user_id):
         .sample(9, random_state=42)
         .to_dict(orient='records')
     )
-    test_list=[last_positive_dict] + negative_dicts
+    test_list = [last_positive_dict] + negative_dicts
 
     return test_list

@@ -13,7 +13,7 @@ if __name__ == '__main__':
     print("读取用户数据")
     df = readDataset(dataset, subsets)  # 读取数据
     ids = getUID(df)
-    mode = Constant.DOUL_MODE  # 模式
+    mode = Constant.POS_MODE  # 模式
     print("对每个用户生成profile")
     # 对每个用户生成profile
     for id in ids:

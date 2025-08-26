@@ -18,6 +18,7 @@ def LLMGenerate(df, user_id, mode, user_profile=""):
     :param user_profile:
     :return: {"user_id": user_id, "output": profileInfo}
     """
+    print("mode:", mode)
     if mode == Constant.POS_MODE:
         sequence = positive_sequence_data(df, user_id)
         prompt = Positive_Prompt_GPT41.format(profile=user_profile, sequence_item_profile=sequence)
@@ -30,7 +31,7 @@ def LLMGenerate(df, user_id, mode, user_profile=""):
         sequence = test_data_item(df,user_id)
         print(sequence)
         prompt = Inference_Prompt.format(profile=user_profile, candidate_item=sequence)
-
+    print("sequence",sequence)
     response = client.responses.create(
         model="gpt-4.1",
         input=prompt
