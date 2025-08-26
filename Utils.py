@@ -77,8 +77,8 @@ class EasyRec:
 
     def get_embedding(self, documents):
         response = requests.post(f"{self.url}/get_embedding", json={"documents": documents})
-        print("Status:", response.status_code)
-        print("Response:", response.text)
+        #print("Status:", response.status_code)
+        #print("Response:", response.text)
         embeddings = response.json()['embeddings']
         return embeddings
 

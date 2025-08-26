@@ -37,7 +37,7 @@ def getItemId(df):
     return item_ids
 
 
-def positive_sequence_data(df, user_id):
+def positive_sequence_data(df, user_id,sampling_method,parameter):
     """
     仅考虑positive的行为序列
     :param df:
@@ -51,14 +51,14 @@ def positive_sequence_data(df, user_id):
     positive_data = positive_data.drop(['rating', 'timestamp'],axis=1)
     # print("positive_data:\n",positive_data)
     # 对序列进行采样
-    sample_method = "SBS"
-    sampling_choice(positive_data, sample_method)
+    sample_method = sampling_method
+    all_selected_items=sampling_choice(positive_data, sample_method,parameter)
     # print("user_id:", user_id, "length of data:", lenOfData)
     # print("positive data:",positive_data)
-    return {"pos": positive_data}
+    return {"pos": all_selected_items}
 
 
-def doul_sequence_data(df, user_id):
+def doul_sequence_data(df, user_id,sampling_method,parameter):
     """
     考虑positive和negative的行为序列
     :param df:

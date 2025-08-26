@@ -29,7 +29,10 @@ def centroid_selection_sampling():
     pass
 
 
-def SBS_sampling(df, distance_threshold=0.5, alpha=1.1, ratio=0.6):
+def SBS_sampling(df, parameter):
+    distance_threshold=parameter["distance_threshold"]
+    alpha=parameter["alpha"]
+    ratio=parameter["ratio"]
     print("start sbs sampling")
     positive_items=df["item_id"].tolist()
     max_index=len(positive_items)-1
@@ -85,7 +88,8 @@ def SBS_sampling(df, distance_threshold=0.5, alpha=1.1, ratio=0.6):
 
 
     print("length of all_selected_indexs:\n",len(all_selected_indexs))
-    return all_selected_indexs, all_selected_items, selected_class2index_list, class2centroid
+    # return all_selected_indexs, all_selected_items, selected_class2index_list, class2centroid
+    return all_selected_items
 
 def sampling(cluster_list, alpha=1.1, ratio=0.6):
     sum_size = sum([len(cluster) for cluster in cluster_list])
@@ -188,11 +192,11 @@ def select_samples(points, alpha=1.1, num_samples=10):
     return np.array(selected_points), selected_indexs, selected_scores
 
 
-def sampling_choice(df,method):
+def sampling_choice(df,method,parameter):
     if method=="full":
         return full_sampling(df)
     elif method=="recent":
         return recent_sampling(df)
     elif method=="SBS":
-        return SBS_sampling(df)
+        return SBS_sampling(df,parameter)
 

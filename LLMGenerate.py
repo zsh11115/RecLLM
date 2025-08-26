@@ -9,7 +9,7 @@ from prompt import Distillation_Prompt, Doul_Prompt, Positive_Prompt_GPT41, Infe
 client = OpenAI()
 
 
-def LLMGenerate(df, user_id, mode, user_profile=""):
+def LLMGenerate(df, user_id, mode, sampling_method,parameter,user_profile=""):
     """
     使用LLM生成目标
     :param df:
@@ -20,18 +20,18 @@ def LLMGenerate(df, user_id, mode, user_profile=""):
     """
     print("mode:", mode)
     if mode == Constant.POS_MODE:
-        sequence = positive_sequence_data(df, user_id)
+        sequence = positive_sequence_data(df, user_id,sampling_method,parameter)
         prompt = Positive_Prompt_GPT41.format(profile=user_profile, sequence_item_profile=sequence)
 
     if mode == Constant.DOUL_MODE:
-        sequence = doul_sequence_data(df, user_id)
+        sequence = doul_sequence_data(df, user_id,sampling_method,parameter)
         prompt = Doul_Prompt.format(profile=user_profile, sequence_item_profile=sequence)
 
     if mode==Constant.REC_MODE:
         sequence = test_data_item(df,user_id)
         print(sequence)
         prompt = Inference_Prompt.format(profile=user_profile, candidate_item=sequence)
-    print("sequence",sequence)
+    #print("sequence",sequence)
     response = client.responses.create(
         model="gpt-4.1",
         input=prompt
