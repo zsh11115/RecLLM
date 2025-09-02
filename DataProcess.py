@@ -88,14 +88,14 @@ def test_data_item(df, user_id):
 
     # 正样本：取最后一条，去掉 rating/timestamp，转 dict
     positive_data = user_data[user_data['rating'] >= 1]
-    last_positive_dict = positive_data.iloc[-1].drop(['rating', 'timestamp']).to_dict()
+    last_positive_dict = positive_data.iloc[-1].drop(['user_id', 'rating', 'timestamp']).to_dict()
     pos_item_ids = set(positive_data['item_id'])
 
     # 负样本：随机取 9 条，去掉 rating/timestamp，转 dict
     negative_data = all_data[~all_data['item_id'].isin(pos_item_ids)]
     negative_dicts = (
         negative_data
-        .drop(['rating', 'timestamp'], axis=1)
+        .drop(['user_id', 'rating', 'timestamp'], axis=1)
         .sample(9, random_state=42)
         .to_dict(orient='records')
     )

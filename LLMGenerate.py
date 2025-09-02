@@ -9,7 +9,7 @@ from prompt import Distillation_Prompt, Doul_Prompt, Positive_Prompt_GPT41, Infe
 client = OpenAI()
 
 
-def LLMGenerate(df, user_id, mode, sampling_method,parameter,user_profile=""):
+def LLMGenerate(df, user_id, mode, sampling_method, parameter=None, user_profile=""):
     """
     使用LLM生成目标
     :param df:
@@ -19,19 +19,28 @@ def LLMGenerate(df, user_id, mode, sampling_method,parameter,user_profile=""):
     :return: {"user_id": user_id, "output": profileInfo}
     """
     print("mode:", mode)
+
+    # 仅positive sequence
     if mode == Constant.POS_MODE:
-        sequence = positive_sequence_data(df, user_id,sampling_method,parameter)
+        sequence = positive_sequence_data(df, user_id, sampling_method, parameter)
         prompt = Positive_Prompt_GPT41.format(profile=user_profile, sequence_item_profile=sequence)
 
+    # positive和negative都有
     if mode == Constant.DOUL_MODE:
-        sequence = doul_sequence_data(df, user_id,sampling_method,parameter)
+        sequence = doul_sequence_data(df, user_id, sampling_method, parameter)
         prompt = Doul_Prompt.format(profile=user_profile, sequence_item_profile=sequence)
 
-    if mode==Constant.REC_MODE:
-        sequence = test_data_item(df,user_id)
+    # LLM进行推荐
+    if mode == Constant.REC_MODE:
+        sequence = test_data_item(df, user_id)
         print(sequence)
         prompt = Inference_Prompt.format(profile=user_profile, candidate_item=sequence)
-    #print("sequence",sequence)
+
+    if mode==Constant.TEST_MODE:
+        sequence=positive_sequence_data(df,user_id,'full',parameter)
+        prompt = Distillation_Prompt.format(profile=user_profile, sequence_item_profile=sequence)
+
+    # print("sequence",sequence)
     response = client.responses.create(
         model="gpt-4.1",
         input=prompt

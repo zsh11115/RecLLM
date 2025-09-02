@@ -4,6 +4,7 @@ import ast
 
 #  统计所有用户的评估参数，进行均值计算
 def evaluate(raw_data):
+    print(raw_data)
     recommendations = [ast.literal_eval(item) for item in raw_data]
     topk = [1, 5, 10]
     for k in topk:

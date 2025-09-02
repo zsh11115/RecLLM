@@ -3,3 +3,4 @@ ProfilePath='./Result/{dataset}_{mode}_{subsets}/{sampling_method}/{parameter}/u
 POS_MODE=1
 DOUL_MODE=2
 REC_MODE=3
+TEST_MODE=0
