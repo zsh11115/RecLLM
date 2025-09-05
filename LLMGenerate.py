@@ -12,13 +12,12 @@ client = OpenAI()
 def LLMGenerate(df, user_id, mode, sampling_method, parameter=None, user_profile=""):
     """
     使用LLM生成目标
-    :param df:
-    :param user_id:
-    :param mode:
-    :param user_profile:
+    :param df: 评分数据
+    :param user_id: 用户id
+    :param mode: 生成模式
+    :param user_profile: 用户画像
     :return: {"user_id": user_id, "output": profileInfo}
     """
-    print("mode:", mode)
 
     # 仅positive sequence
     if mode == Constant.POS_MODE:
@@ -42,7 +41,7 @@ def LLMGenerate(df, user_id, mode, sampling_method, parameter=None, user_profile
 
     # print("sequence",sequence)
     response = client.responses.create(
-        model="gpt-4.1",
+        model="gpt-5-mini",
         input=prompt
     )
     # print("prompt:",prompt)

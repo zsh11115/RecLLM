@@ -37,41 +37,37 @@ def getItemId(df):
     return item_ids
 
 
-def positive_sequence_data(df, user_id,sampling_method,parameter):
+def positive_sequence_data(df, user_id, sampling_method, parameter):
     """
     仅考虑positive的行为序列
+    :param parameter: 采样参数
+    :param sampling_method: 采样方法
     :param df:
     :param user_id:
     :return: {"pos": positive_data}
     """
-    sequence = []
-    # print("df['user_id'] == user_id",df['user_id'] == user_id)
     user_data = df[df['user_id'] == user_id].sort_values(by='timestamp')
+
     positive_data = user_data[user_data['rating'] >= 1]
-    positive_data = positive_data.drop(['rating', 'timestamp'],axis=1)
-    # print("positive_data:\n",positive_data)
+    positive_data = positive_data.drop(['rating', 'timestamp'], axis=1)
+
     # 对序列进行采样
     sample_method = sampling_method
-    all_selected_items=sampling_choice(positive_data, sample_method,parameter)
-    # print("user_id:", user_id, "length of data:", lenOfData)
-    # print("positive data:",positive_data)
+    all_selected_items = sampling_choice(positive_data, sample_method, parameter)
+
     return {"pos": all_selected_items}
 
 
-def doul_sequence_data(df, user_id,sampling_method,parameter):
+def doul_sequence_data(df, user_id, sampling_method, parameter):
     """
     考虑positive和negative的行为序列
     :param df:
     :param user_id:
     :return: {"pos": positive_data, "neg": negative_data}
     """
-    # sequence = []
     user_data = df[df['user_id'] == user_id].sort_values(by='timestamp')
     positive_data = user_data[user_data['rating'] >= 1]
     negative_data = user_data[user_data['rating'] < 1]
-    # lenOfData = len(positive_data)
-    # print("user_id:", user_id, "length of data:", lenOfData)
-    # print("positive data:",positive_data)
     return {"pos": positive_data, "neg": negative_data}
 
 

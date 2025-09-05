@@ -66,12 +66,12 @@ def SBS_sampling(df, parameter):
     for pos_item in pos_item_list:
         pos_item_profile = item_feature_to_str(pos_item)
         pos_item_profile_list.append(pos_item_profile)
-    print("pos_item_profile_list")
     embeddings = EasyRec_ReRanker.get_embedding(pos_item_profile_list)
-    # print("embeddings:",embeddings)
     embeddings = np.array(embeddings)
+    # embedding是一样的
     print("hierarchical_clustering")
     class2index_list, index2class = hierarchical_clustering(embeddings, distance_threshold=distance_threshold)
+    print("distance_threshold",distance_threshold)
     print('cluster number:', len(class2index_list.keys()))
     # {1: [0, 1, 2, 6, 7, 16, 18, 25, 26, 30, 33], 10: [3, 24, 28], 3: [4, 8, 19], 9: [5], 12: [9], 11: [10, 14, 31], 2: [11, 17, 21], 6: [12, 27], 4: [13, 32], 8: [15, 29], 5: [20], 7: [22, 23]}
 

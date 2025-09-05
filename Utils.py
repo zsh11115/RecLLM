@@ -105,7 +105,7 @@ class EasyRec:
         return scores
 
 
-def hierarchical_clustering(embeddings, distance_threshold=0.3):
+def hierarchical_clustering(embeddings, distance_threshold=0.5):
     Z = linkage(embeddings, method='ward', metric='euclidean')
 
     labels = fcluster(Z, t=distance_threshold, criterion='distance')
