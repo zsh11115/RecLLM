@@ -37,4 +37,3 @@ if __name__ == '__main__':
         userProfileInfo = LLMGenerate(df, id, mode, sampling_method, parameter)  # 生成用户画像
         saveProfile(userProfileInfo, profilePath)  # 保存用户画像信息
 
-# TODO:整理现在的进展应对10号的会议
