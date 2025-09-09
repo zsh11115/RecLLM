@@ -15,8 +15,8 @@ if __name__ == '__main__':
     print("读取用户数据")
     df = readDataset(dataset, subsets)  # 读取数据
     ids = getUID(df)
-    mode = Constant.POS_MODE  # 模式
-    # mode=Constant.TEST_MODE
+    mode = Constant.GENERATE_MODE  # 模式
+
     print("对每个用户生成profile")
 
     # ProfilePath='./Result/{dataset}_{mode}_{subsets}/{sampling_method}/{parameter}/user_profile.json'
@@ -36,4 +36,3 @@ if __name__ == '__main__':
         candidate_list_test = test_data_item(df, id)  # 测试数据列表
         userProfileInfo = LLMGenerate(df, id, mode, sampling_method, parameter)  # 生成用户画像
         saveProfile(userProfileInfo, profilePath)  # 保存用户画像信息
-

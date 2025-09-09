@@ -4,21 +4,22 @@ from Utils import item_feature_to_str, EasyRec, hierarchical_clustering, samplin
 
 EasyRec_ReRanker = EasyRec()
 
-def sampling_choice(df,method,parameter):
-    if method=="full":
+
+def sampling_choice(df, method, parameter):
+    if method == "full":
         return full_sampling(df)
-    elif method=="recent":
+    elif method == "recent":
         return recent_sampling(df)
-    elif method=="relevance":
+    elif method == "relevance":
         return relevance_sampling(df)
-    elif method=="random":
+    elif method == "random":
         return random_sampling(df)
-    elif method=="centroid_selection":
+    elif method == "centroid_selection":
         return centroid_selection_sampling(df)
-    elif method=="boundary_selection":
+    elif method == "boundary_selection":
         return boundary_selection_sampling(df)
-    elif method=="SBS":
-        return SBS_sampling(df,parameter)
+    elif method == "SBS":
+        return SBS_sampling(df, parameter)
 
 
 def full_sampling(df):
@@ -29,31 +30,35 @@ def full_sampling(df):
     """
     return df
 
+
 def recent_sampling():
     pass
+
 
 def relevance_sampling():
     pass
 
+
 def random_sampling():
     pass
 
+
 def centroid_selection_sampling():
     pass
+
 
 def boundary_selection_sampling():
     pass
 
 
-
 def SBS_sampling(df, parameter):
-    distance_threshold=parameter["distance_threshold"]
-    alpha=parameter["alpha"]
-    ratio=parameter["ratio"]
+    distance_threshold = parameter["distance_threshold"]
+    alpha = parameter["alpha"]
+    ratio = parameter["ratio"]
     print("start sbs sampling")
-    positive_items=df["item_id"].tolist()
-    max_index=len(positive_items)-1
-    print("length of positive index:",max_index)
+    positive_items = df["item_id"].tolist()
+    max_index = len(positive_items) - 1
+    print("length of positive index:", max_index)
     pos_item_list = []
     for item_id in positive_items[:max_index]:
         item_data = df[df['item_id'] == item_id].iloc[0]
@@ -71,7 +76,7 @@ def SBS_sampling(df, parameter):
     # embedding是一样的
     print("hierarchical_clustering")
     class2index_list, index2class = hierarchical_clustering(embeddings, distance_threshold=distance_threshold)
-    print("distance_threshold",distance_threshold)
+    print("distance_threshold", distance_threshold)
     print('cluster number:', len(class2index_list.keys()))
     # {1: [0, 1, 2, 6, 7, 16, 18, 25, 26, 30, 33], 10: [3, 24, 28], 3: [4, 8, 19], 9: [5], 12: [9], 11: [10, 14, 31], 2: [11, 17, 21], 6: [12, 27], 4: [13, 32], 8: [15, 29], 5: [20], 7: [22, 23]}
 
@@ -79,7 +84,7 @@ def SBS_sampling(df, parameter):
 
     # {1: [0, 1, 2, 6, 7, 16, 18, 25, 26, 30, 33], 4: [3, 10, 14, 24, 28, 31], 2: [4, 8, 11, 17, 19, 21], 3: [5, 12, 13, 15, 20, 22, 23, 27, 29, 32], 5: [9]}
 
-    #print("class2index_list",class2index_list)
+    # print("class2index_list",class2index_list)
     # aa=input('pause')
 
     cluster_list = []
@@ -103,12 +108,6 @@ def SBS_sampling(df, parameter):
     for index in all_selected_indexs:
         all_selected_items.append(pos_item_list[index])
 
-
-    print("length of all_selected_indexs:\n",len(all_selected_indexs))
-    print("selected_index",all_selected_indexs)
-    # return all_selected_indexs, all_selected_items, selected_class2index_list, class2centroid
+    print("length of all_selected_indexs:\n", len(all_selected_indexs))
+    print("selected_index", all_selected_indexs)
     return all_selected_items
-
-
-
-
